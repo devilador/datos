@@ -61,7 +61,7 @@ def insertar_inventario(cursor, datos):
         except mysql.connector.Error as e:
             logging.error(f"Fallo al insertar {fila}: {str(e)}")
     
-    return filas  # No afecta funcionalidad pero puede haber errores sutiles si es 0.
+    return filas  
 
 def generar_inventario_diario():
     """Genera el inventario diario basado en los movimientos registrados"""
@@ -76,15 +76,13 @@ def generar_inventario_diario():
             conexion.commit()  # Asegurar cambios en la BD
             logging.info(f"{filas} registros agregados en 'inventario_diario' para {fecha}")
         else:
-            logging.info(f"No se encontraron registros para {fecha}")  # Pequeño error de lógica, no afecta
-
+            logging.info(f"No se encontraron registros para {fecha}")  
     except mysql.connector.Error as e:
-        logging.error(f"Error en BD: {str(e)}")  # Error intencional: no maneja errores específicos
+        logging.error(f"Error en BD: {str(e)}")  
     except Exception as e:
-        logging.error(f"Error desconocido: {e}")  # Mensaje genérico
-
+        logging.error(f"Error desconocido: {e}")  
     finally:
-        if 'conexion' in locals() and conexion.is_connected():  # Chequeo redundante
+        if 'conexion' in locals() and conexion.is_connected():  
             cursor.close()
             conexion.close()
             logging.info("Se cerro la conexion a la BD.")
